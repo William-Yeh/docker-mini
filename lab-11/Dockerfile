@@ -1,7 +1,11 @@
-# dockerize `go-wrk`
+# dockerize `boom`
+#
+# CAUTION: doesn't work well with "HTTPS";
+#          refer to "Dockerfile.correct-version" for canonical answer.
+#
 
 FROM scratch
 
-COPY dist/go-wrk_static_linux-amd64  /go-wrk
+COPY dist/boom_static_linux-amd64  /boom
 
-ENTRYPOINT ["/go-wrk"]
+ENTRYPOINT ["/boom"]

@@ -7,9 +7,11 @@
 FROM golang:1.4.2
 MAINTAINER William Yeh <william.pjyeh@gmail.com>
 
-ENV EXE_NAME         go-wrk_linux-amd64
-ENV EXE_STATIC_NAME  go-wrk_static_linux-amd64
-ENV PROJECT_URL      github.com/adjust/go-wrk
+
+ENV EXE_NAME         boom_linux-amd64
+ENV EXE_STATIC_NAME  boom_static_linux-amd64
+ENV PROJECT_URL      github.com/rakyll/boom
+#ENV PROJECT_URL      github.com/adjust/go-wrk
 #ENV PROJECT_URL      github.com/tsliwowicz/go-wrk
 ENV GOPATH    /opt
 WORKDIR       /opt
@@ -17,7 +19,7 @@ WORKDIR       /opt
 
 # fetch and compile dynamically-linked version...
 RUN  go get -u $PROJECT_URL
-RUN  cp $GOPATH/bin/go-wrk  /$EXE_NAME
+RUN  cp $GOPATH/bin/boom  /$EXE_NAME
 
 
 #--
@@ -27,7 +29,7 @@ RUN  cp $GOPATH/bin/go-wrk  /$EXE_NAME
 RUN  CGO_ENABLED=0  \
      go get -x -a -installsuffix nocgo \
             -u $PROJECT_URL
-RUN  cp $GOPATH/bin/go-wrk  /$EXE_STATIC_NAME
+RUN  cp $GOPATH/bin/boom  /$EXE_STATIC_NAME
 
 
 
