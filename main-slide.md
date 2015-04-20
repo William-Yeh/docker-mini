@@ -18,20 +18,18 @@ License: CC BY 2.0
 ---
 
 layout: false
-class: center, middle
+class: middle
 
-# Source code and slides
+# Slides: http://bit.ly/docker-mini
 
-https://github.com/William-Yeh/docker-mini
+<br/>
 
----
+## If you want to follow my labs...
 
-# If you want to follow my labs...
-
-```
+```bash
 $ git clone https://github.com/William-Yeh/docker-mini.git
 $ cd docker-mini
-$ vagrant up
+$ vagrant  up
 ```
 
 ---
