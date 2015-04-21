@@ -16,6 +16,11 @@ $ cd docker-mini
 $ vagrant up
 ```
 
+## Discussion
+
+Comments? Go to discussion threads at [Kaif](https://kaif.io/z/programming/debates/c6P9Ic8aMn).
+
+
 ## License
 
 Author: William Yeh, william.pjyeh@gmail.com
