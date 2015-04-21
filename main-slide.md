@@ -405,14 +405,39 @@ busybox             latest     4986bf8c1536      2.43  MB
   - [Building Docker Images for Static Go Binaries](https://medium.com/@kelseyhightower/optimizing-docker-images-for-static-binaries-b5696e26eb07)
 
 - ELF: [Creating minimal Docker images from dynamically linked ELF binaries](http://blog.oddbit.com/2015/02/05/creating-minimal-docker-images/)
+
 - Python: [Creating super small docker images](http://yasermartinez.com/blog/posts/creating-super-small-docker-images.html)
+
+- Java:
+
+  - [Running Java applications in Docker containers](http://weaveblog.com/2014/12/09/running-java-applications-in-docker-containers/)
+  - [Minimal Docker image with Java](https://github.com/jeanblanchard/docker-busybox-java/)
 
 ---
 
 # TL;DR
 
 - Use `scratch` or `busybox` as base images.
+
 - Use a compiler that can generate static native ELF files (e.g., C, C++, Go).
+
+- Consider the price/performance ratio...
+
+--
+
+  - ...worth it?
+
+```
+  REPOSITORY                   TAG        IMAGE ID         VIRTUAL SIZE
+  --------------------------   ------     ------------     ------------
+  jeanblanchard/busybox-java   latest     f9b532dbdd9f     162 MB
+  jeanblanchard/busybox-java   7          e5ad718ab499     146.5 MB
+  jeanblanchard/busybox-java   jdk7       49f89f582b82     147.6 MB
+  jeanblanchard/busybox-java   jdk8       778cb8b6fb46     163.8 MB
+  errordeveloper/oracle-jdk    latest     589353b8b10d     303.6 MB
+  errordeveloper/oracle-jre    latest     183e41fe6d99     159.4 MB
+```
+
 
 ---
 
