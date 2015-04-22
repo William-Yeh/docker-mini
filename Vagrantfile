@@ -24,6 +24,8 @@ Vagrant.configure(2) do |config|
         node.vm.provision "shell", inline: <<-SHELL
             sudo apt-get update
             sudo apt-get install -y redis-tools
+
+            curl -sSL http://bit.ly/install-extract-elf-so | sudo bash
         SHELL
     end
 
@@ -34,6 +36,10 @@ Vagrant.configure(2) do |config|
         node.vm.provider "virtualbox" do |vb|
             vb.customize ["modifyvm", :id, "--memory", "256"]
         end
+
+        node.vm.provision "shell", inline: <<-SHELL
+            curl -sSL http://bit.ly/install-extract-elf-so | sudo bash
+        SHELL
     end
 
 end

@@ -1,0 +1,26 @@
+install:
+  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+
+script:
+
+  - echo "==> [lab-01] Building..."
+  - ./run 'docker build lab-01'
+
+  - echo "==> [lab-02] Building..."
+  - ./run 'docker build lab-02'
+
+  - echo "==> [lab-03] Building..."
+  - ./run 'docker build lab-03'
+
+
+  - echo "==> [lab-05] Clean up rootfs.tar.gz in advance..."
+  - rm  lab-05/rootfs.tar.gz  lab-05/redis.conf
+
+  - echo "==> [lab-05] Generating rootfs.tar.gz ..."
+  - ./run 'docker build -t rootfs -f lab-05/Dockerfile.rootfs lab-05  &&  docker run -v $(pwd)/lab-05:/data rootfs'
+
+  - echo "==> [lab-05] Inspecting the newly-generated rootfs.tar.gz ..."
+  - tar ztvf lab-05/rootfs.tar.gz
+
+  - echo "==> [lab-05] Building the main Docker image..."
+  - ./run 'docker build -t redis lab-05  &&  docker run redis  redis-server --version'

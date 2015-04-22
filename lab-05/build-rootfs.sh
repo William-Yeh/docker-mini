@@ -26,6 +26,7 @@ ldd redis-$REDIS_VERSION/src/redis-server
 
 
 echo "==> Extract .so files and pack them into rootfs.tar.gz..."
-../extract-elf-so_static_linux-amd64  \
+#curl -sSL http://bit.ly/install-extract-elf-so | sudo bash
+extract-elf-so  \
   -z  \
   redis-$REDIS_VERSION/src/redis-server
