@@ -448,6 +448,35 @@ template: inverse
 
 ---
 
+# Context
+
+<br/>
+
+```bash
+$ cat /etc/os-release
+```
+```
+NAME="Ubuntu"
+VERSION="14.04.2 LTS, Trusty Tahr"
+...
+```
+
+<br/>
+
+```bash
+$ uname -a
+```
+```
+Linux localhost 3.13.0-46-generic #77-Ubuntu SMP
+Mon Mar 2 18:23:39 UTC 2015
+x86_64 x86_64 x86_64 GNU/Linux
+```
+
+.footnote[.red[*] Vagrant box: [ubuntu/trusty64](https://atlas.hashicorp.com/ubuntu/boxes/trusty64)]
+
+---
+
+
 # Investigate required .so files
 
 `ldd` - print shared library dependencies.
@@ -475,7 +504,7 @@ vDSO (virtual dynamic shared object):
 ```bash
 $ tar ztvf rootfs.tar.gz
 
-4485167  2015-04-13 14:21  usr/local/bin/redis-server
+4485167  2015-04-21 22:54  usr/local/bin/redis-server
 1071552  2015-02-25 16:56  lib/x86_64-linux-gnu/libm.so.6
  141574  2015-02-25 16:56  lib/x86_64-linux-gnu/libpthread.so.0
 1840928  2015-02-25 16:56  lib/x86_64-linux-gnu/libc.so.6
@@ -546,6 +575,175 @@ $ redis-benchmark  -h  \
 
 - Pack all dependencies into a `rootfs.tar` or `rootfs.tar.gz` to be put into the `scratch` base image.
 
+
+---
+
+class: center, middle
+
+# ~~The End?~~
+
+--
+
+## How about other OS?
+
+... For example, CentOS 7.0?
+
+---
+
+# Context, Part 2
+
+<br/>
+
+```bash
+$ cat /etc/redhat-release
+```
+```
+CentOS Linux release 7.0.1406 (Core)
+```
+
+<br/>
+
+```bash
+$ uname -a
+```
+```
+Linux localhost.localdomain 3.10.0-123.el7.x86_64 #1 SMP
+Mon Jun 30 12:09:22 UTC 2014
+x86_64 x86_64 x86_64 GNU/Linux
+```
+
+.footnote[.red[*] Vagrant box: [chef/centos-7.0](https://atlas.hashicorp.com/chef/boxes/centos-7.0)]
+
+---
+
+
+# Investigate required .so files
+
+`ldd` - print shared library dependencies.
+
+```bash
+$ ldd  redis-3.0.0/src/redis-server
+    linux-vdso.so.1 =>  (0x00007fffe5d0d000)
+    libm.so.6 => /lib64/libm.so.6 (0x00007f0ad8d01000)
+    libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f0ad8ae5000)
+    libc.so.6 => /lib64/libc.so.6 (0x00007f0ad8723000)
+    /lib64/ld-linux-x86-64.so.2 (0x00007f0ad900a000)
+```
+
+---
+
+# Pack all required .so files into a tarball...
+
+```bash
+$ tar ztvf rootfs.tar.gz
+
+4485167  2015-04-21 22:54  usr/local/bin/redis-server
+1141552  2015-03-05 21:50  lib64/libm.so.6
+ 141616  2015-03-05 21:50  lib64/libpthread.so.0
+2107760  2015-03-05 21:50  lib64/libc.so.6
+ 164336  2015-03-05 21:50  lib64/ld-linux-x86-64.so.2
+```
+
+---
+
+# Compare!
+
+- from Ubuntu 14.04.2
+
+```bash
+4485167  2015-04-21 22:54  usr/local/bin/redis-server
+1071552  2015-02-25 16:56  lib/x86_64-linux-gnu/libm.so.6
+ 141574  2015-02-25 16:56  lib/x86_64-linux-gnu/libpthread.so.0
+1840928  2015-02-25 16:56  lib/x86_64-linux-gnu/libc.so.6
+ 149120  2015-02-25 16:56  lib64/ld-linux-x86-64.so.2
+```
+
+
+- from CentOS 7.0
+
+```bash
+4485167  2015-04-21 22:54  usr/local/bin/redis-server
+1141552  2015-03-05 21:50  lib64/libm.so.6
+ 141616  2015-03-05 21:50  lib64/libpthread.so.0
+2107760  2015-03-05 21:50  lib64/libc.so.6
+ 164336  2015-03-05 21:50  lib64/ld-linux-x86-64.so.2
+```
+
+
+---
+
+# How to: Pin a version?
+
+--
+
+- Basic idea
+
+  - Pin a specific OS version
+
+--
+
+  - ... together with packages and other runtime configurations
+
+--
+
+- Workflow
+
+  - Use CI to drive pinned virtual environments
+
+--
+
+  - Old example: [Make CI easier with Jenkins CI and Vagrant](http://www.larrycaiyu.com/blog/2011/10/21/make-ci-easier-with-jenkins-ci-and-vagrant/)
+
+--
+
+  - Fashion example: CI + Docker!
+
+---
+
+# CI + Docker?
+
+--
+
+`.travis.yml` &nbsp;&nbsp; [![Travis CI - Build Status](https://travis-ci.org/William-Yeh/docker-mini.svg?branch=master)](https://travis-ci.org/William-Yeh/docker-mini)
+
+
+```yaml
+install:
+  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
+
+script:
+  - echo "==> [lab-05] Clean up rootfs.tar.gz in advance..."
+  - rm  lab-05/rootfs.tar.gz  lab-05/redis.conf
+
+  - echo "==> [lab-05] Generating rootfs.tar.gz ..."
+  - ./run 'docker build -t rootfs
+                  -f lab-05/Dockerfile.rootfs  lab-05
+       &&  docker run -v $(pwd)/lab-05:/data  rootfs'
+
+  - echo "==> [lab-05] Inspecting the newly-generated rootfs.tar.gz ..."
+  - tar ztvf lab-05/rootfs.tar.gz
+
+  - echo "==> [lab-05] Building the main Docker image..."
+  - ./run docker build lab-05
+```
+
+.footnote[.red[*] [moul/travis-docker](https://github.com/moul/travis-docker/): Run Docker in Travis CI builds.]
+
+---
+
+# Lessons Learned (revised)
+
+### Basic
+
+- Investigate required .so files with `ldd`.
+
+- Pack all dependencies into a `rootfs.tar` or `rootfs.tar.gz` to be put into the `scratch` base image.
+
+### Advanced
+
+- Use `Dockerfile` to pin specific versions of OS, packages, and other runtime configurations.
+
+- Use CI to automate the whole workflow.
 
 ---
 
