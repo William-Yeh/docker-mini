@@ -227,6 +227,36 @@ REPOSITORY          TAG        IMAGE ID         VIRTUAL SIZE
 
 --
 
+<br/>
+
+```bash
+$ docker history redis-02
+```
+
+
+---
+
+# Analogy: git
+
+<br/>
+
+```bash
+$ git add  A_VERY_LARGE_FILE
+$ git commit
+
+
+$ git rm  A_VERY_LARGE_FILE
+$ git commit
+```
+
+Is the `A_VERY_LARGE_FILE` still in the git repo?
+
+---
+
+# Seek advices (continued)
+
+☛ [Optimizing Docker Images](http://www.centurylinklabs.com/optimizing-docker-images/) - by Brian DeHamer, 2014-07-28.
+
 > [How]
 
 > .red[**Chain Your Commands**]
