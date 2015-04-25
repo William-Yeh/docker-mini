@@ -53,7 +53,9 @@ $ vagrant  up
 
 .footnote[.red[*] "dyn": dynamically linked ELF; "s": statically-linked ELF.]
 
+
 ---
+
 
 template: inverse
 
@@ -478,7 +480,7 @@ template: inverse
 
 ---
 
-# Context
+# Context in this lab
 
 <br/>
 
@@ -605,6 +607,20 @@ $ redis-benchmark  -h  \
 
 - Pack all dependencies into a `rootfs.tar` or `rootfs.tar.gz` to be put into the `scratch` base image.
 
+---
+
+# About the `scratch`
+
+- Before Docker 1.5.0, it is the root image `511136ea3c5a` in the whole Docker image layer hierarchy.
+
+--
+
+- As of Docker 1.5.0:
+
+  > `FROM scratch` is a no-op in the `Dockerfile`, and will not create an extra layer in your image (so a previously 2-layer image will now be a 1-layer image instead).  &nbsp;&nbsp; --- Quote: [scratch in Docker Hub](https://registry.hub.docker.com/_/scratch/)
+
+  > Goodbye '511136ea3c5a64f264b78b5433614aec<br/>563103b4d4702f3ba7d4d2698e22c158',<br/>
+it was nice knowing you.  &nbsp;&nbsp; --- Quote: [Make `FROM scratch` a special cased 'no-base' spec](https://github.com/docker/docker/pull/8827)
 
 ---
 
