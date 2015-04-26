@@ -451,11 +451,26 @@ busybox             latest     4986bf8c1536      2.43  MB
 
 - Use `scratch` or `busybox` as base images.
 
-- Use a compiler that can generate static native ELF files (e.g., C, C++, Go).
-
-- Consider the price/performance ratio...
-
 --
+
+- Use a compiler that can generate static native ELF files.
+
+  - C/C++ (gcc "Linker Options" example):
+    ```bash
+    -static  -static-libgcc
+    -static-libstdc++  -static-libasan  -static-libtsan
+    ```
+
+  - Go ([1.4 example](https://github.com/kelseyhightower/rocket-talk/issues/1)):
+    ```bash
+    $ CGO_ENABLED=0  \
+        go <command>  -a -installsuffix nocgo \
+        ...
+    ```
+
+---
+
+# Consider the price/performance ratio...
 
   - ...worth it?
 
@@ -1250,6 +1265,27 @@ Perfect!
   - See how I fight with APR in Dockerizing Ganglia: [Docker-Ganglia-Monitor-Mini
 ](https://github.com/William-Yeh/Docker-Ganglia-Monitor-Mini).
 
+---
+
+# Dynamic analysis?
+
+Techniques:
+
+  - fanotify: [How I shrunk a Docker image by 98.8% – featuring fanotify](https://blog.jtlebi.fr/2015/04/25/how-i-shrunk-a-docker-image-by-98-8-featuring-fanotify/)
+
+  - strace: [PerArneng/fortune project](https://github.com/PerArneng/fortune)
+
+  - ptrace: [CDE: Automatically create portable Linux applications](http://www.pgbovine.net/cde.html)
+
+---
+
+# Static + dynamic
+
+> "I believe, the best way [...] have to combine a statically analyses of all used binaries and libraries [...] Then an additional runtime analyses [...] or maybe with some more advanced kernel tracing magic."
+
+> "I’m right now in the process to develop a more sophisticated tool..."
+
+> --- Quote: [Dieter Reuter](https://blog.jtlebi.fr/2015/04/25/how-i-shrunk-a-docker-image-by-98-8-featuring-fanotify/#comment-135256)
 
 ---
 
@@ -1258,7 +1294,7 @@ template: inverse
 
 .percent60[.center[![bg](img/shameless-plug.png)]]
 
-# Shameless Plug
+# Shameless Plugs
 
 ???
 
