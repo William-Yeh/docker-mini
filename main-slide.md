@@ -148,6 +148,15 @@ debian              wheezy     1265e16d0c28     84.96 MB
 
 ---
 
+# Debian 8.0 was released - April 25th, 2015
+
+
+> After almost 24 months of constant development the Debian project is proud to present its new stable version 8 (code name *"Jessie"*), which will be supported for the next 5 years
+
+> --- Quote: [Press release](https://www.debian.org/News/2015/20150426)
+
+---
+
 template: inverse
 
 # Lab #02
