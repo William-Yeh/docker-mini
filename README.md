@@ -4,7 +4,9 @@ Quest for minimal Docker images
 [![Build Status](https://travis-ci.org/William-Yeh/docker-mini.svg?branch=master)](https://travis-ci.org/William-Yeh/docker-mini)
 
 
-This repo contains slides and lab materials for my talk to be given at [Docker.Taipei Meetup #5 (Apr 30, 2015)](http://www.meetup.com/Docker-Taipei/events/221967975/): “Quest for minimal Docker images” 【追求極簡化 Docker image 之路】.
+This repo contains slides and lab materials for my talk given at [Docker.Taipei Meetup #5 (Apr 30, 2015)](http://www.meetup.com/Docker-Taipei/events/221967975/): “Quest for minimal Docker images” 【追求極簡化 Docker image 之路】.
+
+You may also watch the [recorded video](http://www.ustream.tv/recorded/61720595).
 
 
 ## Materials
